@@ -14,12 +14,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: actions/checkout@master
     - name: Yarn Install
-      run: yarn install
-    - name: Yarn Build
+      run: yarn 
+    - name: Production build
       run: yarn build
-    - name: Deploy to S3
+    - name: Deploy to S3        
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --follow-symlinks --delete
