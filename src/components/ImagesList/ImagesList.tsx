@@ -20,7 +20,7 @@ export const ImagesList: React.FC = () => {
     return (
         <div>
             <div className="columns-3 gap-4 my-8">
-                {data?.results.map((image: Image) => (
+                {data?.map((image: Image) => (
                     <div
                         key={image.primary_key}
                         className="rounded overflow-hidden shadow-lg bg-white mb-4 relative"
