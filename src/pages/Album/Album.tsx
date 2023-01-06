@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { fetchPhotos } from "../../api/photo";
 import { ImagesList } from "../../components/ImagesList/ImagesList";
 
-export const Album: React.FC = ({}) => {
+export const Album: React.FC = () => {
     const { label } = useParams();
     const { fetchNextPage, hasNextPage, isLoading, data } = useInfiniteQuery({
         queryKey: ["photos", { limit: 5, label }],

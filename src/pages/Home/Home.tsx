@@ -3,7 +3,7 @@ import { fetchPhotos } from "../../api/photo";
 import { ImagesList } from "../../components/ImagesList/ImagesList";
 import { Uploader } from "../../components/Uploader/Uploader";
 
-export const Home: React.FC = ({}) => {
+export const Home: React.FC = () => {
     const { fetchNextPage, hasNextPage, isLoading, data } = useInfiniteQuery({
         queryKey: ["photos", { limit: 5 }],
         getNextPageParam: (lastPage) => lastPage.lastKey,
