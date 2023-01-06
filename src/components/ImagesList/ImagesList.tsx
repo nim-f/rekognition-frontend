@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchPhotos } from "../../api/photo";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import { InfiniteData } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 
 interface Image {
@@ -10,18 +10,19 @@ interface Image {
     name: string;
 }
 
-export const ImagesList: React.FC = () => {
-    const {
-        fetchNextPage,
-        hasNextPage,
-        isLoading,
-        data,
-    } = useInfiniteQuery({
-        queryKey: ["photos", { limit: 5 }],
-        getNextPageParam: (lastPage, allPages) => lastPage.lastKey,
-        queryFn: fetchPhotos,
-    });
+interface ImagesListProps {
+    fetchNextPage: Function;
+    hasNextPage?: boolean;
+    isLoading?: boolean;
+    data?: InfiniteData<{ items: Image[] }>;
+}
 
+export const ImagesList: React.FC<ImagesListProps> = ({
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    data,
+}) => {
     if (isLoading) return <>Loading... </>;
     return (
         <div>
@@ -50,7 +51,12 @@ export const ImagesList: React.FC = () => {
                                         key={label}
                                         className="inline-flex items baseline bg-gray-200 rounded-full mr-2 mb-2 px-2 py-1 text-sm font-semibold text-gray-700"
                                     >
-                                        <span className="p-1">#{label}</span>
+                                        <Link
+                                            to={`/album/${label}`}
+                                            className="p-1"
+                                        >
+                                            #{label}
+                                        </Link>
                                         <XCircleIcon className="h-6 w-6 text-red-500" />
                                     </span>
                                 ))}

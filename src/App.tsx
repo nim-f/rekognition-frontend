@@ -1,16 +1,21 @@
 import "./App.css";
-import { ImagesList } from "./components/ImagesList/ImagesList";
 import { NavBar } from "./components/NavBar/NavBar";
-import { Uploader } from "./components/Uploader/Uploader";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home } from "./pages/Home/Home";
+import { Album } from "./pages/Album/Album";
 
 function App() {
     return (
         <div>
-            <NavBar />
-            <div className="App container mx-auto py-8 max-w-7xl">
-                <Uploader />
-                <ImagesList />
-            </div>
+            <BrowserRouter>
+                <NavBar />
+                <div className="App container mx-auto py-8 max-w-7xl">
+                    <Routes>
+                        <Route index element={<Home />} />
+                        <Route path="album/:label" element={<Album />} />
+                    </Routes>
+                </div>
+            </BrowserRouter>
         </div>
     );
 }

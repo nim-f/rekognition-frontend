@@ -14,13 +14,17 @@ export const uploadPhoto = (body: FormData) =>
 export const fetchPhotos = ({
     queryKey,
     pageParam,
-}: QueryFunctionContext<[string, { limit: number }], string | undefined>) => {
+}: QueryFunctionContext<
+    [string, { limit: number; label?: string }],
+    string | undefined
+>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_key, { limit }] = queryKey;
+    const [_key, { limit, label }] = queryKey;
     return fetch(
         `${API_URL}?${encodeQueryParams({
             limit,
-            ...(pageParam ? { startKey: pageParam } : {}),
+            label,
+            startKey: pageParam,
         })}`
     ).then((res) => res.json());
 };
