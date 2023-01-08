@@ -1,3 +1,10 @@
+
+# Smart photo album tutorial 
+
+The repo is a part of fullstack tutorial about AWS recognition, Serverless and React. 
+
+You can find the tutorial here: [AWS Rekognition fullstack tutorial](https://www.youtube.com/playlist?list=PLivfVBKXLkx8r8xOssrGuiyOoH5W4qulN)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
