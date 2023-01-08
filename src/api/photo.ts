@@ -1,4 +1,5 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
+import { ImageInterface } from "../types/image";
 import { encodeQueryParams } from "../utils/encodeQueryParams";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3009";
@@ -10,6 +11,15 @@ export const uploadPhoto = (body: FormData) =>
         method: "POST",
         body,
     });
+
+export const updatePhoto = (
+    data: Partial<ImageInterface & { newName: string }>
+) => {
+    return fetch(`${API_URL}/update`, {
+        method: "POST",
+        body: JSON.stringify(data),
+    });
+};
 
 export const fetchPhotos = ({
     queryKey,
