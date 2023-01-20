@@ -1,8 +1,7 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
+import { API_URL } from "../constants/api";
 import { ImageInterface } from "../types/image";
 import { encodeQueryParams } from "../utils/encodeQueryParams";
-
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3009";
 
 console.log({ API_URL });
 
@@ -18,6 +17,19 @@ export const updatePhoto = (
     return fetch(`${API_URL}/update`, {
         method: "POST",
         body: JSON.stringify(data),
+    });
+};
+
+export const deletePhoto = ({
+    primary_key,
+    name,
+}: {
+    primary_key: string;
+    name: string;
+}) => {
+    return fetch(`${API_URL}/delete`, {
+        method: "DELETE",
+        body: JSON.stringify({ primary_key, name }),
     });
 };
 

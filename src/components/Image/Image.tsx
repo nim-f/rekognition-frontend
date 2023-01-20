@@ -2,7 +2,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
-import { updatePhoto } from "../../api/photo";
+import { deletePhoto, updatePhoto } from "../../api/photo";
 import { ImageInterface } from "../../types/image";
 import { Button } from "../Button/Button";
 import { EditableText } from "../EditableText/EditableText";
@@ -10,6 +10,12 @@ import { EditableText } from "../EditableText/EditableText";
 export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
     console.log({ image });
     const queryClient = useQueryClient();
+
+    const deletePhotoMutation = useMutation(deletePhoto, {
+        onSuccess: (response) => {
+            queryClient.invalidateQueries({ queryKey: ["photos"] });
+        },
+    });
 
     const updatePhotoMutation = useMutation(updatePhoto, {
         onSuccess: (response) => {
@@ -19,7 +25,7 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
 
     const deleteLabel = (label: string) => {
         updatePhotoMutation.mutate({
-            id: image.primary_key,
+            primary_key: image.primary_key,
             labels: image.labels.filter((l) => l !== label),
         });
     };
@@ -27,7 +33,7 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
     const renameImage = (newName: string) => {
         console.log({ newName });
         updatePhotoMutation.mutate({
-            id: image.primary_key,
+            primary_key: image.primary_key,
             name: image.name,
             newName,
         });
@@ -39,7 +45,17 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
             className="rounded overflow-hidden shadow-lg bg-white mb-4 relative"
         >
             <div className="absolute top-1 right-1">
-                <XCircleIcon className="h-10 w-10 text-gray-500 opacity-50" />
+                <Button
+                    light
+                    onClick={() => {
+                        deletePhotoMutation.mutate({
+                            primary_key: image.primary_key,
+                            name: image.name,
+                        });
+                    }}
+                >
+                    <XCircleIcon className="h-10 w-10 text-gray-500 opacity-50" />
+                </Button>
             </div>
             <img src={image.url} alt={image.labels[0]} className="w-full" />
             <div className="px-6 py-4">
