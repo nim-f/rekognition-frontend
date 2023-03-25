@@ -9,7 +9,6 @@ export const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
     return (
