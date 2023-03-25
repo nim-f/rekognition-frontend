@@ -1,6 +1,7 @@
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { deletePhoto, updatePhoto } from "../../api/photo";
 import { ImageInterface } from "../../types/image";
@@ -10,6 +11,7 @@ import { EditableText } from "../EditableText/EditableText";
 export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
     console.log({ image });
     const queryClient = useQueryClient();
+    const [{ AccessToken }] = useCookies(["AccessToken"]);
 
     const deletePhotoMutation = useMutation(deletePhoto, {
         onSuccess: (response) => {
@@ -24,19 +26,25 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
     });
 
     const deleteLabel = (label: string) => {
-        updatePhotoMutation.mutate({
-            primary_key: image.primary_key,
-            labels: image.labels.filter((l) => l !== label),
-        });
+        updatePhotoMutation.mutate(
+            {
+                primary_key: image.primary_key,
+                labels: image.labels.filter((l) => l !== label),
+            },
+            AccessToken
+        );
     };
 
     const renameImage = (newName: string) => {
         console.log({ newName });
-        updatePhotoMutation.mutate({
-            primary_key: image.primary_key,
-            name: image.name,
-            newName,
-        });
+        updatePhotoMutation.mutate(
+            {
+                primary_key: image.primary_key,
+                name: image.name,
+                newName,
+            },
+            AccessToken
+        );
     };
 
     return (
@@ -48,10 +56,13 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
                 <Button
                     light
                     onClick={() => {
-                        deletePhotoMutation.mutate({
-                            primary_key: image.primary_key,
-                            name: image.name,
-                        });
+                        deletePhotoMutation.mutate(
+                            {
+                                primary_key: image.primary_key,
+                                name: image.name,
+                            },
+                            AccessToken
+                        );
                     }}
                 >
                     <XCircleIcon className="h-10 w-10 text-gray-500 opacity-50" />

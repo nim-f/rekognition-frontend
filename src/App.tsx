@@ -5,6 +5,7 @@ import { Home } from "./pages/Home/Home";
 import { Album } from "./pages/Album/Album";
 import { Register } from "./pages/Register/Register";
 import { Login } from "./pages/Login/Login";
+import { Private } from "./pages/Private/Private";
 
 function App() {
     return (
@@ -13,8 +14,11 @@ function App() {
                 <NavBar />
                 <div className="App container mx-auto py-8 max-w-7xl">
                     <Routes>
-                        <Route index element={<Home />} />
-                        <Route path="album/:label" element={<Album />} />
+                        <Route element={<Private />}>
+                            <Route index element={<Home />} />
+                            <Route path="album/:label" element={<Album />} />
+                        </Route>
+
                         <Route path="register" element={<Register />} />
                         <Route path="login" element={<Login />} />
                     </Routes>

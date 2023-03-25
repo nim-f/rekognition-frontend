@@ -21,7 +21,7 @@ export const ImagesList: React.FC<ImagesListProps> = ({
         <div>
             <div className="columns-3 gap-4 my-8">
                 {data?.pages.map((page) => {
-                    return page.items.map((image: ImageInterface) => (
+                    return page?.items?.map((image: ImageInterface) => (
                         <Image image={image} />
                     ));
                 })}
