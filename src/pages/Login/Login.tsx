@@ -8,17 +8,33 @@ import { UserData } from "../../types/user";
 
 export const Login: React.FC = () => {
     const queryClient = useQueryClient();
-    const [cookies, setCookie] = useCookies(["AccessToken", "RefreshToken"]);
+    const [cookies, setCookie] = useCookies([
+        "AccessToken",
+        "RefreshToken",
+        "userId",
+    ]);
     const navigate = useNavigate();
     const login = useMutation(loginUser, {
         onSuccess: (res) => {
             console.log("login is successful");
             res.json().then((data) => {
-                const { AccessToken, ExpiresIn, RefreshToken } = data;
-                queryClient.invalidateQueries(["photos"]);
-                setCookie("AccessToken", AccessToken, { maxAge: ExpiresIn });
-                setCookie("RefreshToken", RefreshToken, { maxAge: ExpiresIn });
+                if (data.statusCode !== 200) {
+                    console.error(data.code, data.message);
+                } else {
+                    const { AccessToken, ExpiresIn, RefreshToken, sub } = data;
+                    queryClient.invalidateQueries(["photos"]);
+                    setCookie("AccessToken", AccessToken, {
+                        maxAge: ExpiresIn,
+                    });
+                    setCookie("RefreshToken", RefreshToken, {
+                        maxAge: ExpiresIn,
+                    });
+                    setCookie("userId", sub, { maxAge: ExpiresIn });
+                }
             });
+        },
+        onError: (error) => {
+            console.error(error);
         },
     });
 

@@ -2,8 +2,10 @@ import { ChangeEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadPhoto } from "../../api/photo";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
+import { useCookies } from "react-cookie";
 
 export const Uploader: React.FC = () => {
+    const [cookies] = useCookies(["userId"]);
     const queryClient = useQueryClient();
     const mutation = useMutation(uploadPhoto, {
         onSuccess(response) {
@@ -16,9 +18,10 @@ export const Uploader: React.FC = () => {
 
         console.log(files);
         const formData = new FormData();
-        Object.values(files as ArrayLike<File>).forEach((file) =>
-            formData.append("file", file)
-        );
+        Object.values(files as ArrayLike<File>).forEach((file) => {
+            formData.append("file", file);
+            formData.append("userId", cookies.userId);
+        });
 
         mutation.mutate(formData);
     };
