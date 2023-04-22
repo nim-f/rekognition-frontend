@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/user";
@@ -8,6 +8,7 @@ import { UserData } from "../../types/user";
 
 export const Login: React.FC = () => {
     const queryClient = useQueryClient();
+    const [error, setError] = useState<string | null>(null);
     const [cookies, setCookie] = useCookies([
         "AccessToken",
         "RefreshToken",
@@ -16,11 +17,9 @@ export const Login: React.FC = () => {
     const navigate = useNavigate();
     const login = useMutation(loginUser, {
         onSuccess: (res) => {
-            console.log("login is successful");
-            res.json().then((data) => {
-                if (data.statusCode !== 200) {
-                    console.error(data.code, data.message);
-                } else {
+            console.log("login is successful", res);
+            if (res.status === 200) {
+                res.json().then((data) => {
                     const { AccessToken, ExpiresIn, RefreshToken, sub } = data;
                     queryClient.invalidateQueries(["photos"]);
                     setCookie("AccessToken", AccessToken, {
@@ -30,8 +29,11 @@ export const Login: React.FC = () => {
                         maxAge: ExpiresIn,
                     });
                     setCookie("userId", sub, { maxAge: ExpiresIn });
-                }
-            });
+                });
+            } else {
+                setError("Email or password is wrong");
+                throw new Error("unsuccessful login");
+            }
         },
         onError: (error) => {
             console.error(error);
@@ -50,7 +52,7 @@ export const Login: React.FC = () => {
         <div>
             <h1 className="text-4xl leading-tight mb-4 pb-4">Log in</h1>
 
-            <UserForm onSubmit={onSubmit} />
+            <UserForm onSubmit={onSubmit} error={error} setError={setError} />
         </div>
     );
 };

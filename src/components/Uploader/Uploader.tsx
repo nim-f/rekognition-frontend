@@ -13,6 +13,7 @@ export const Uploader: React.FC = () => {
             response.json().then((data) => console.log(data));
         },
     });
+    
     const uploadFile = (e: ChangeEvent) => {
         const files = (e.target as HTMLInputElement).files;
 

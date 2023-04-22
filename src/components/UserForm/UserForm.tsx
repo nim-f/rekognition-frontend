@@ -3,9 +3,15 @@ import { Button } from "../Button/Button";
 
 interface UserFormProps {
     onSubmit: (data: any) => void;
+    setError?: (data: any) => void;
+    error?: string | null;
 }
 
-export const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
+export const UserForm: React.FC<UserFormProps> = ({
+    onSubmit,
+    setError,
+    error,
+}) => {
     const {
         register,
         handleSubmit,
@@ -20,7 +26,10 @@ export const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
                         Email
                     </label>
                     <input
-                        {...register("email", { required: true })}
+                        {...register("email", {
+                            required: true,
+                            onChange: () => setError?.(null),
+                        })}
                         className="form-control
                           block
                           w-full
@@ -45,7 +54,10 @@ export const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
                         Email
                     </label>
                     <input
-                        {...register("password", { required: true })}
+                        {...register("password", {
+                            required: true,
+                            onChange: () => setError?.(null),
+                        })}
                         className="form-control
                           block
                           w-full
@@ -64,6 +76,7 @@ export const UserForm: React.FC<UserFormProps> = ({ onSubmit }) => {
                     />
                     {/* errors will return when field validation fails  */}
                     {errors.password && <span>This field is required</span>}
+                    {error && <span>{error}</span>}
                 </div>
 
                 <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
