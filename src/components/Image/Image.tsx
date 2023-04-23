@@ -9,7 +9,6 @@ import { Button } from "../Button/Button";
 import { EditableText } from "../EditableText/EditableText";
 
 export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
-    console.log({ image });
     const queryClient = useQueryClient();
     const [{ AccessToken }] = useCookies(["AccessToken"]);
 
@@ -36,7 +35,6 @@ export const Image: React.FC<{ image: ImageInterface }> = ({ image }) => {
     };
 
     const renameImage = (newName: string) => {
-        console.log({ newName });
         updatePhotoMutation.mutate(
             {
                 primary_key: image.primary_key,

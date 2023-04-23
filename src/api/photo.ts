@@ -4,8 +4,6 @@ import { API_URL } from "../constants/api";
 import { ImageInterface } from "../types/image";
 import { encodeQueryParams } from "../utils/encodeQueryParams";
 
-console.log({ API_URL });
-
 const cookies = new Cookies();
 
 export const uploadPhoto = (body: FormData) =>

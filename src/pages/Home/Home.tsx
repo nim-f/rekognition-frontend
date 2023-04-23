@@ -6,7 +6,9 @@ import { Uploader } from "../../components/Uploader/Uploader";
 export const Home: React.FC = () => {
     const { fetchNextPage, hasNextPage, isLoading, data } = useInfiniteQuery({
         queryKey: ["photos", { limit: 5 }],
-        getNextPageParam: (lastPage) => lastPage.lastKey,
+        getNextPageParam: (lastPage) => {
+            return lastPage.lastKey;
+        },
         queryFn: fetchPhotos,
     });
 
